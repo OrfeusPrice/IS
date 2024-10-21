@@ -32,6 +32,6 @@ int Heurisctic(int, int, int);
 int ScorePos(int, int);
 int ScoreNeg(int, int);
 bool IsWin(Board&, int);
-Board CloneBoard(Board);
+Board CopyBoard(Board);
 
 #endif //HEADER

@@ -9,6 +9,6 @@
 
 // Добавьте сюда заголовочные файлы для предварительной компиляции
 #include "framework.h"
-extern "C" __declspec(dllexport) int Move(int move, int* board, int player);
+extern "C" __declspec(dllexport) int Move(int move, int* board, int player, bool isInit);
 
 #endif //PCH_H

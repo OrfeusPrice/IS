@@ -21,7 +21,7 @@ pair<int, int> MiniMax(Board& b, int d, int alf, int bet, int p) {
 	pair<int, int> bestMove = { p == AI ? INT_MIN : INT_MAX, -1 };
 	for (int c = 0; c < COL; c++)
 		if (b.G[ROW - 1][c] == 0) {
-			Board newBoard = CloneBoard(b);
+			Board newBoard = CopyBoard(b);
 			MakeMove(newBoard, c, p);
 			int score = MiniMax(newBoard, d - 1, alf, bet, p == AI ? PLAYER : AI).first;
 			bestMove = (p == AI ? score > bestMove.first : score < bestMove.first) ? pair<int, int>{score, (int)c} : bestMove;
@@ -126,7 +126,7 @@ bool IsWin(Board& b, int p) {
 	return false;
 }
 
-Board CloneBoard(Board b) {
+Board CopyBoard(Board b) {
 	Board newBoard;
 	for (int r = 0; r < ROW; r++) {
 		for (int c = 0; c < COL; c++) {
@@ -144,7 +144,8 @@ void ChangeExternBoard(int* extboard) {
 	}
 }
 
-extern "C" __declspec(dllexport) int Move(int move, int* extboard, int player) {
+extern "C" __declspec(dllexport) int Move(int move, int* extboard, int player, bool isInit) {
+	if (isInit) TURNS = 0;
 	for (int r = 0; r < ROW; r++) {
 		for (int c = 0; c < COL; c++) {
 			board.G[r][c] = extboard[r * COL + c];
