@@ -12,22 +12,26 @@
 
 using namespace std;
 
-unsigned int COL = 7;
-unsigned int ROW = 6;
-unsigned int PLAYER = 1;
-unsigned int AI = 2;
-unsigned int MAX_DEPTH = 5;
-unsigned int TURNS = 0;
+struct Board {
+	array<array<int, 7>, 6> G; //Grid
+};
 
-vector<vector<int>> board(ROW, vector<int>(COL));
+int COL = 7;
+int ROW = 6;
+int PLAYER = 1;
+int AI = 2;
+int MAX_DEPTH = 5;
+int TURNS = 0;
+Board board;
 
-void MakeMove(vector<vector<int>>&, int, unsigned int);
-int AiMove();
-pair<int, int> MiniMax(vector<vector<int>>&, unsigned int, int, int, unsigned int);
-int TabScore(vector<vector<int>>, unsigned int);
-int ScoreSet(vector<int>, unsigned int);
-int Heurisctic(unsigned int, unsigned int, unsigned int);
-bool IsWin(vector<vector<int>>&, unsigned int);
-vector<vector<int>> CloneBoard(vector<vector<int>>);
+void MakeMove(Board&, int, int);
+pair<int, int> MiniMax(Board&, int, int, int, int);
+int Score(Board, int);
+int ScoreSet(vector<int>, int);
+int Heurisctic(int, int, int);
+int ScorePos(int, int);
+int ScoreNeg(int, int);
+bool IsWin(Board&, int);
+Board CloneBoard(Board);
 
 #endif //HEADER
