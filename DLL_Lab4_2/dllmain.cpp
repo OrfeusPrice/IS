@@ -145,7 +145,10 @@ void ChangeExternBoard(int* extboard) {
 }
 
 extern "C" __declspec(dllexport) int Move(int move, int* extboard, int player, bool isInit) {
-	if (isInit) TURNS = 0;
+	if (isInit) {
+		TURNS = 0; MAX_DEPTH = 5;
+	}
+	while (ROW * COL - TURNS < MAX_DEPTH)MAX_DEPTH--;
 	for (int r = 0; r < ROW; r++) {
 		for (int c = 0; c < COL; c++) {
 			board.G[r][c] = extboard[r * COL + c];
