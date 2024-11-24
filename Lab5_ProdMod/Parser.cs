@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
+using static Lab5_ProdMod.FactType;
+
 
 namespace Lab5_ProdMod
 {
@@ -20,10 +22,10 @@ namespace Lab5_ProdMod
 
             for (int row = 1; row <= 139; row++)
             {
-                FactType ft = FactType.Target;
+                FactType ft = T;
 
-                if (row >= 1 && row <= 28 || row == 108) ft = FactType.Axioma;
-                if (row >= 29 && row <= 51 || row >= 83 && row <= 86) ft = FactType.Сonsequence;
+                if (row >= 1 && row <= 28 || row == 108) ft = A;
+                if (row >= 29 && row <= 51 || row >= 83 && row <= 86) ft = C;
 
 
                 facts.Add(new Fact(worksheet.Cell(row, 1).Value.ToString(), worksheet.Cell(row, 2).Value.ToString(), ft));
@@ -45,10 +47,10 @@ namespace Lab5_ProdMod
 
             for (int row = 1; row <= 15; row++)
             {
-                FactType ft = FactType.Target;
+                FactType ft = T;
 
-                if (row >= 1 && row <= 7) ft = FactType.Axioma;
-                if (row >= 9 && row <= 15) ft = FactType.Сonsequence;
+                if (row >= 1 && row <= 7) ft = A;
+                if (row >= 9 && row <= 15) ft = C;
 
 
                 facts.Add(new Fact(worksheet.Cell(row, 1).Value.ToString(), worksheet.Cell(row, 2).Value.ToString(), ft));
@@ -116,7 +118,7 @@ namespace Lab5_ProdMod
                                         }
                                 }
                             prod.result = facts.Find(x => x.name == temp);
-                            if (prod.result == null) prod.result = new Fact("f00", "Нет факта", FactType.Сonsequence); ;
+                            if (prod.result == null) prod.result = new Fact("f00", "Нет факта", C); ;
                         }
                     }
                 }

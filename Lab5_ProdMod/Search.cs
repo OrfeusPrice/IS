@@ -1,8 +1,11 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using static Lab5_ProdMod.FactType;
 
 namespace Lab5_ProdMod
 {
@@ -11,100 +14,94 @@ namespace Lab5_ProdMod
         public static void FillNodes(ref List<Node> nodes, List<Product> prods)
         {
             foreach (Product product in prods)
-            {
                 nodes.Add(new Node(product));
-            }
+
+            List<Node> temp = new List<Node>();
+
+            foreach (Node item in nodes)
+                if (item.f.RtoP.Count > 1)
+                    temp.Add(new OrNode(item.p));
+                else
+                    temp.Add(new AndNode(item.p));
+
+            nodes = temp;
 
             foreach (var node in nodes)
-            {
                 foreach (var n in nodes)
-                {
-                    if (n.prod.inputFacts.Contains(node.prod.result))
-                    {
+                    if (n.input.Contains(node.f))
                         node.nextNodes.Add(n);
-                    }
-                }
-            }
         }
 
-        public static void ForwardSearch(List<Node> nodes, ref string text)
+        public static void FS(List<Node> nodes, ref string text)
         {
             List<Fact> targets = new List<Fact>();
 
             foreach (var item in nodes)
-            {
-                if (item.prod.result.isTrue && item.prod.result.FT == FactType.Target)
-                    targets.Add(item.prod.result);
-            }
+                if (item.f.isTrue && item.f.FT == T)
+                    targets.Add(item.f);
 
             List<Node> trueNodes = new List<Node>();
             foreach (Node node in nodes)
-            {
-                if (node.prod.inputFacts.All(x => x.isTrue))
+                if (node.input.All(x => x.isTrue))
                 {
-                    node.prod.result.isTrue = true;
+                    node.SetT();
                     trueNodes.Add(node);
                 }
-            }
 
-            List<Node> closeList = new List<Node>();
+            List<Node> closed = new List<Node>();
             Queue<Node> queue = new Queue<Node>();
 
             foreach (var item in trueNodes)
-            {
                 queue.Enqueue(item);
-            }
 
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
 
-                if (!closeList.Contains(node))
+                if (!closed.Contains(node))
                 {
-                    closeList.Add(node);
+                    closed.Add(node);
                     foreach (var item in node.nextNodes)
                     {
-                        if (item.prod.inputFacts.All(x => x.isTrue))
-                        {
-                            item.prod.result.isTrue = true;
-                        }
+                        if (item.input.All(x => x.isTrue))
+                            item.SetT();
+                        
                         queue.Enqueue(item);
                     }
 
-                    if (node.prod.result.isTrue && node.prod.result.FT == FactType.Сonsequence)
-                        text += node.prod.description + '\r' + '\n';
+                    if (node.f.isTrue && node.f.FT == C)
+                        text += "+  A: " + node.p.description + '\r' + '\n';
                 }
             }
             foreach (var item in targets)
             {
-                foreach (var i in item.productsRes)
+                foreach (var i in item.RtoP)
                 {
                     if (i.inputFacts.All(x => x.isTrue))
                     {
-                        text += "ДОКАЗАНО: " + i.description + '\r' + '\n';
+                        text += "+  T: " + i.description + '\r' + '\n';
                         break;
                     }
                     else
                     {
-                        text += "НЕ ДОКАЗАНО: " + i.description + '\r' + '\n';
+                        text += "-  T: " + i.description + '\r' + '\n';
                         break;
                     }
                 }
             }
         }
 
-        public static void BackwardSearch(List<Node> nodes, ref string text)
+        public static void BS(List<Node> nodes, ref string text)
         {
-            Fact target = new Fact("f000", "null", FactType.Target);
+            Fact target = new Fact("f000", "null", T);
             Node targetNode = nodes[0];
             List<Fact> axioms = new List<Fact>();
-            int CountAxioms = 0;
 
             foreach (var item in nodes)
             {
-                if (item.prod.result.isTrue && item.prod.result.FT == FactType.Target)
+                if (item.f.isTrue && item.f.FT == T)
                 {
-                    target = item.prod.result;
+                    target = item.f;
                     targetNode = item;
                     break;
                 }
@@ -112,119 +109,69 @@ namespace Lab5_ProdMod
 
             foreach (var item in nodes)
             {
-                foreach (var i in item.prod.inputFacts)
+                foreach (var i in item.input)
                 {
-                    if (i.FT == FactType.Axioma && i.isTrue && !axioms.Contains(i))
+                    if (i.FT == A && i.isTrue && !axioms.Contains(i))
                         axioms.Add(i);
                 }
-            }
-
-            List<Node> orNodes = new List<Node>();
-            List<Node> andNodes = new List<Node>();
-
-            foreach (Node item in nodes)
-            {
-                if (item.prod.result.productsRes.Count > 1)
-                    orNodes.Add(item);
-                else andNodes.Add(item);
             }
 
             Queue<Node> queue = new Queue<Node>();
 
             queue.Enqueue(targetNode);
-            List<Node> closeList = new List<Node>();
+            List<Node> closed = new List<Node>();
 
             while (queue.Count > 0)
             {
                 Node node = queue.Dequeue();
-                if (!closeList.Contains(node))
+                if (!closed.Contains(node))
                 {
-                    closeList.Add(node);
-                    if (orNodes.Contains(node))
+                    closed.Add(node);
+
+                    foreach (var item in nodes)
                     {
-                        foreach (var item in nodes)
-                        {
-                            if (item.nextNodes.Contains(node))
-                                queue.Enqueue(item);
-                        }
-
-                        if (node.prod.result.productsRes.Any(p => p.inputFacts.All(x => (axioms.Contains(x) || x.FT != FactType.Axioma) && x.isTrue)))
-                        {
-                            foreach (var item in node.prod.inputFacts)
-                            {
-                                if (item.FT == FactType.Axioma && item.isTrue && axioms.Contains(item))
-                                {
-                                    if (!item.isAxiomTrue)
-                                    {
-                                        text += "АКСИОМА ПОДТВЕРЖДЕНА: " + item.description + '\r' + '\n';
-                                        CountAxioms++;
-                                        item.isAxiomTrue = true;
-                                    }
-                                }
-                            }
-                        }
-
+                        if (item.nextNodes.Contains(node))
+                            queue.Enqueue(item);
                     }
 
-                    if (andNodes.Contains(node))
-                    {
-                        foreach (var item in nodes)
-                        {
-                            if (item.nextNodes.Contains(node))
-                                queue.Enqueue(item);
-                        }
+                    if (node is OrNode) (node as OrNode).TryProve(axioms, ref text);
+                    else if (node is AndNode) (node as AndNode).TryProve(axioms, ref text);
 
-                        if (node.prod.result.productsRes.All(p => p.inputFacts.All(x => (axioms.Contains(x) || x.FT != FactType.Axioma) && x.isTrue)))
+                    List<Node> temp = new List<Node>();
+                    foreach (var item in closed)
+                        temp.Add(item);
+
+                    foreach (var cn in closed)
+                    {
+                        if (cn.input.All(x => x.isTrue) && !cn.f.isTrue)
                         {
-                            foreach (var item in node.prod.inputFacts)
-                            {
-                                if (item.FT == FactType.Axioma && item.isTrue && axioms.Contains(item))
-                                {
-                                    if (!item.isAxiomTrue)
-                                    {
-                                        text += "АКСИОМА ПОДТВЕРЖДЕНА: " + item.description + '\r' + '\n';
-                                        CountAxioms++;
-                                        item.isAxiomTrue = true;
-                                    }
-                                }
-                            }
+                            cn.SetT();
+                            temp.Remove(cn);
+                            queue.Enqueue(cn);
                         }
                     }
-
-                    List<Node> tempCloseList = new List<Node>();
-
-                    foreach (var closeNode in closeList)
-                    {
-                        tempCloseList.Add(closeNode);
-                        if (closeNode.prod.inputFacts.All(x => x.isTrue) && !closeNode.prod.result.isTrue)
-                        {
-                            closeNode.prod.result.isTrue = true;
-                            tempCloseList.Remove(closeNode);
-                            queue.Enqueue(closeNode);
-                        }
-                    }
-                    closeList = tempCloseList;
+                    closed = temp;
                 }
             }
 
             foreach (var a in axioms)
             {
                 if (!a.isAxiomTrue)
-                    text += "АКСИОМА НЕ ПОДТВЕРЖДЕНА: " + a.description + '\r' + '\n';
+                    text += "-  A: " + a.description + '\r' + '\n';
             }
 
-            if (CountAxioms == axioms.Count)
+            if (axioms.All(x => x.isAxiomTrue))
             {
-                foreach (var item in target.productsRes)
+                foreach (var item in target.RtoP)
                 {
-                    text += "ДОКАЗАНО: " + item.description + '\r' + '\n';
+                    text += "+  T: " + item.description + '\r' + '\n';
                 }
             }
             else
             {
-                foreach (var item in target.productsRes)
+                foreach (var item in target.RtoP)
                 {
-                    text += "НЕ ДОКАЗАНО: " + item.description + '\r' + '\n';
+                    text += "-  T: " + item.description + '\r' + '\n';
                 }
             }
         }
