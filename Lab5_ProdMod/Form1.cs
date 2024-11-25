@@ -24,16 +24,18 @@ namespace Lab5_ProdMod
         public List<CheckBox> _targetsCB = new List<CheckBox>();
         public List<Node> nodes = new List<Node>();
 
+        public static string endl = "\r\n";
+
         public Form1()
         {
             InitializeComponent();
 
-            Parse(ref facts, ref PROD);
-            //ParseC(ref facts, ref PROD);
+            //Parse(ref facts, ref PROD);
+            ParseC(ref facts, ref PROD);
             FillProduct(ref PROD, facts);
             FillProductDescription(PROD);
-            OutputDescriptionInFile(PROD);
-            //OutputDescriptionInFileC(PROD);
+            //OutputDescriptionInFile(PROD);
+            OutputDescriptionInFileC(PROD);
 
             foreach (var item in facts)
             {
@@ -81,7 +83,6 @@ namespace Lab5_ProdMod
                 Target_BOX.Controls.Add(cb);
             }
 
-            FillNodes(ref nodes, PROD);
 
 
         }
@@ -103,6 +104,8 @@ namespace Lab5_ProdMod
         {
             Clear();
             CheckFacts();
+            FillNodes(ref nodes, PROD);
+
             string text = "";
             FS(nodes, ref text);
 
@@ -114,6 +117,8 @@ namespace Lab5_ProdMod
         {
             Clear();
             CheckFacts();
+            FillNodes(ref nodes, PROD);
+
             string text = "";
             BS(nodes, ref text);
 
@@ -127,8 +132,9 @@ namespace Lab5_ProdMod
             Res_TB.Text = "";
             foreach (var item in facts)
             {
+                nodes.Clear();
                 item.isTrue = false;
-                item.isAxiomTrue = false;
+                item.isA = false;
             }
         }
 
@@ -141,7 +147,7 @@ namespace Lab5_ProdMod
             int count = 1;
             foreach (var item in productDescription)
             {
-                f2.RULES_TB.Text += $"{count++}: {item} \r\n\r\n";
+                f2.RULES_TB.Text += $"{count++}: {item} {endl}";
             }
             f2.Show();
         }

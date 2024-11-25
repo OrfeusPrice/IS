@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Lab5_ProdMod.FactType;
+using static Lab5_ProdMod.Form1;
 
 
 namespace Lab5_ProdMod
@@ -18,7 +19,7 @@ namespace Lab5_ProdMod
         public List<Product> AtoR;
         public List<Product> RtoP;
         public bool isTrue = false;
-        public bool isAxiomTrue = false;
+        public bool isA = false;
         public Fact(string name, string description, FactType ft)
         {
             this.name = name;
@@ -31,7 +32,7 @@ namespace Lab5_ProdMod
         public void FindProd(List<Product> products)
         {
             foreach (Product product in products)
-                if (product.inputFacts.Contains(this)) AtoR.Add(product);
+                if (product.left.Contains(this)) AtoR.Add(product);
                 else if (product.result == this) RtoP.Add(product);
         }
 
@@ -57,14 +58,14 @@ namespace Lab5_ProdMod
     public class Product
     {
         public string text;
-        public List<Fact> inputFacts;
+        public List<Fact> left;
         public Fact result;
         public string description;
 
         public Product(string text)
         {
             this.text = text;
-            inputFacts = new List<Fact>();
+            left = new List<Fact>();
             result = new Fact("f00", "Нет факта", C);
         }
     }
@@ -73,7 +74,7 @@ namespace Lab5_ProdMod
     {
         public Product p;
         public Fact f;
-        public List<Fact> input = new List<Fact>();
+        public List<Fact> left = new List<Fact>();
         public List<Node> nextNodes = new List<Node>();
         public bool isT = false;
 
@@ -81,7 +82,7 @@ namespace Lab5_ProdMod
         {
             this.p = p;
             f = p.result;
-            input = p.inputFacts;
+            left = p.left;
             isT = f.isTrue;
         }
 
@@ -90,38 +91,40 @@ namespace Lab5_ProdMod
             isT = true;
             f.isTrue = true;
         }
+
+        public bool LeftIsTrue() => left.All(x => x.isTrue);
+        public bool IsTrueAndSelected(List<Fact> l, Fact e) => (l.Contains(e) || e.FT != A) && e.isTrue;
+        public bool IsTrueSelectedA(List<Fact> l, Fact e) => e.isTrue && l.Contains(e);
+        public void SetAxIsTrue(List<Fact> l, ref string text)
+        {
+            foreach (var item in left)
+                if (item.FT == A && item.isTrue && l.Contains(item))
+                    if (!item.isA)
+                    {
+                        text += "+  A: " + item.description + endl;
+                        item.isA = true;
+                    }
+        }
     }
 
     public class OrNode : Node
     {
         public OrNode(Product p) : base(p) { }
 
-        public void TryProve(List<Fact> axioms, ref string text)
+        public void TryProve(List<Fact> l, ref string text)
         {
-            if (f.RtoP.Any(p => p.inputFacts.All(x => (axioms.Contains(x) || x.FT != A) && x.isTrue)))
-                foreach (var item in input)
-                    if (item.FT == A && item.isTrue && axioms.Contains(item))
-                        if (!item.isAxiomTrue)
-                        {
-                            text += "+  A: " + item.description + '\r' + '\n';
-                            item.isAxiomTrue = true;
-                        }
+            if (f.RtoP.Any(p => p.left.All(x => IsTrueAndSelected(l, x))))
+                SetAxIsTrue(l, ref text);
         }
     }
     public class AndNode : Node
     {
         public AndNode(Product p) : base(p) { }
 
-        public void TryProve(List<Fact> axioms, ref string text)
+        public void TryProve(List<Fact> l, ref string text)
         {
-            if (f.RtoP.All(p => p.inputFacts.All(x => (axioms.Contains(x) || x.FT != A) && x.isTrue)))
-                foreach (var item in input)
-                    if (item.FT == A && item.isTrue && axioms.Contains(item))
-                        if (!item.isAxiomTrue)
-                        {
-                            text += "+  A: " + item.description + '\r' + '\n';
-                            item.isAxiomTrue = true;
-                        }
+            if (f.RtoP.All(p => p.left.All(x => IsTrueAndSelected(l, x))))
+                SetAxIsTrue(l, ref text);
         }
     }
 }

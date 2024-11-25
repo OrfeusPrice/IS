@@ -89,7 +89,7 @@ namespace Lab5_ProdMod
                                         temp += text[i];
                                     }
                             }
-                        prod.inputFacts.Add(facts.Find(x => x.name == temp));
+                        prod.left.Add(facts.Find(x => x.name == temp));
                     }
                 }
 
@@ -139,7 +139,7 @@ namespace Lab5_ProdMod
             foreach (Product product in products)
             {
                 string descText = "ЕСЛИ ";
-                foreach (Fact fact in product.inputFacts)
+                foreach (Fact fact in product.left)
                 {
                     descText += fact.description + ", ";
                 }

@@ -6,6 +6,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using static Lab5_ProdMod.FactType;
+using static Lab5_ProdMod.Form1;
 
 namespace Lab5_ProdMod
 {
@@ -28,7 +29,7 @@ namespace Lab5_ProdMod
 
             foreach (var node in nodes)
                 foreach (var n in nodes)
-                    if (n.input.Contains(node.f))
+                    if (n.left.Contains(node.f))
                         node.nextNodes.Add(n);
         }
 
@@ -42,7 +43,7 @@ namespace Lab5_ProdMod
 
             List<Node> trueNodes = new List<Node>();
             foreach (Node node in nodes)
-                if (node.input.All(x => x.isTrue))
+                if (node.LeftIsTrue())
                 {
                     node.SetT();
                     trueNodes.Add(node);
@@ -63,28 +64,28 @@ namespace Lab5_ProdMod
                     closed.Add(node);
                     foreach (var item in node.nextNodes)
                     {
-                        if (item.input.All(x => x.isTrue))
+                        if (item.LeftIsTrue())
                             item.SetT();
-                        
+
                         queue.Enqueue(item);
                     }
 
                     if (node.f.isTrue && node.f.FT == C)
-                        text += "+  A: " + node.p.description + '\r' + '\n';
+                        text += "+  A: " + node.p.description + endl;
                 }
             }
             foreach (var item in targets)
             {
                 foreach (var i in item.RtoP)
                 {
-                    if (i.inputFacts.All(x => x.isTrue))
+                    if (i.left.All(x => x.isTrue))
                     {
-                        text += "+  T: " + i.description + '\r' + '\n';
+                        text += "+  T: " + i.description + endl;
                         break;
                     }
                     else
                     {
-                        text += "-  T: " + i.description + '\r' + '\n';
+                        text += "-  T: " + i.description + endl;
                         break;
                     }
                 }
@@ -109,7 +110,7 @@ namespace Lab5_ProdMod
 
             foreach (var item in nodes)
             {
-                foreach (var i in item.input)
+                foreach (var i in item.left)
                 {
                     if (i.FT == A && i.isTrue && !axioms.Contains(i))
                         axioms.Add(i);
@@ -137,41 +138,38 @@ namespace Lab5_ProdMod
                     if (node is OrNode) (node as OrNode).TryProve(axioms, ref text);
                     else if (node is AndNode) (node as AndNode).TryProve(axioms, ref text);
 
-                    List<Node> temp = new List<Node>();
-                    foreach (var item in closed)
-                        temp.Add(item);
-
+                    bool temp = false;
                     foreach (var cn in closed)
                     {
-                        if (cn.input.All(x => x.isTrue) && !cn.f.isTrue)
+                        if (cn.LeftIsTrue() && !cn.isT)
                         {
                             cn.SetT();
-                            temp.Remove(cn);
                             queue.Enqueue(cn);
+                            temp = true;
                         }
                     }
-                    closed = temp;
+                    if (temp) closed.Clear();
                 }
             }
 
             foreach (var a in axioms)
             {
-                if (!a.isAxiomTrue)
-                    text += "-  A: " + a.description + '\r' + '\n';
+                if (!a.isA)
+                    text += "-  A: " + a.description + endl;
             }
 
-            if (axioms.All(x => x.isAxiomTrue))
+            if (axioms.All(x => x.isA))
             {
                 foreach (var item in target.RtoP)
                 {
-                    text += "+  T: " + item.description + '\r' + '\n';
+                    text += "+  T: " + item.description + endl;
                 }
             }
             else
             {
                 foreach (var item in target.RtoP)
                 {
-                    text += "-  T: " + item.description + '\r' + '\n';
+                    text += "-  T: " + item.description + endl;
                 }
             }
         }
