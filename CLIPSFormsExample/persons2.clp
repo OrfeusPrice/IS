@@ -1,3 +1,108 @@
+;========================================================================
+; Этот блок реализует логику обмена информацией с графической оболочкой,
+; а также механизм остановки и повторного пуска машины вывода
+; Русский текст в комментариях разрешён!
+
+(deftemplate ioproxy  ; шаблон факта-посредника для обмена информацией с GUI
+	(slot fact-id)        ; теоретически тут id факта для изменения
+	(multislot questions)   ; возможные ответы
+	(multislot messages)  ; исходящие сообщения
+	(slot reaction)       ; возможные ответы пользователя
+	(slot value)          ; выбор пользователя
+	(slot restore)        ; забыл зачем это поле
+        (multislot answers)
+)
+
+; Собственно экземпляр факта ioproxy
+(deffacts proxy-fact
+	(ioproxy
+		(fact-id 0112) ; это поле пока что не задействовано
+		(value none)   ; значение пустое
+		(messages)     ; мультислот messages изначально пуст
+		(questions)
+	)
+)
+
+(defrule clear-messages
+	(declare (salience 90))
+	?clear-msg-flg <- (clearmessage)
+	?proxy <- (ioproxy)
+	=>
+	(modify ?proxy (messages))
+	(retract ?clear-msg-flg)
+	(printout t "Messages cleared ..." crlf)
+)
+
+(defrule set-output-and-halt
+	(declare (salience 99))
+	?current-message <- (sendmessagehalt ?new-msg)
+	?proxy <- (ioproxy (messages $?msg-list))
+	=>
+	(printout t "Message set : " ?new-msg " ... halting ..." crlf)
+	(modify ?proxy (messages ?new-msg))
+	(retract ?current-message)
+	(halt)
+)
+
+(defrule set-output-and-proceed
+	(declare (salience 100))
+	?current-message <- (sendmessage ?new-msg)
+	?proxy <- (ioproxy (messages $?msg-list))
+	=>
+	(printout t "Message set : " ?new-msg " ... halting ..." crlf)
+	(modify ?proxy (messages $?msg-list ?new-msg))
+	(retract ?current-message)
+)
+
+(deftemplate question
+    (slot value)
+    (slot type)
+)
+
+(defrule set-question-and-halt
+    (declare (salience 102))
+    ?q <- (question (value ?val))
+    ?proxy <- (ioproxy)
+    =>
+    (modify ?proxy (questions ?val))
+    (retract ?q)
+    (halt)
+)
+
+(defrule clear-questions
+    (declare (salience 101))
+    ?proxy <- (ioproxy (questions $?question-list&:(not(eq(length$ ?question-list) 0))))
+    =>
+    (modify ?proxy (questions))
+)
+
+;======================================================================================
+(deftemplate input-question
+	(multislot name)
+)
+(deftemplate A
+	(multislot name)
+)
+(deftemplate fact
+    (multislot name)
+)
+
+(deftemplate target
+    (multislot name)
+)
+
+(defrule match-facts
+	(declare (salience 9))
+	(A (name ?val))
+	?q <- (input-question (name ?n&?val))
+	=>
+	(retract ?q)
+	(assert (fact (name ?val)))
+)
+
+;=====================================================================================\
+;AX
+
 (deffacts axts
 (A (name "a"))
 (A (name "b"))

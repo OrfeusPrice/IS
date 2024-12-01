@@ -201,7 +201,30 @@ namespace ClipsFormsExample
         {
             if (clipsOpenFileDialog.ShowDialog() == DialogResult.OK)
             {
-                codeBox.Text += System.IO.File.ReadAllText(clipsOpenFileDialog.FileName);
+                if (codeBox.Lines.Count() > 0)
+                {
+                    string temp = System.IO.File.ReadAllText(clipsOpenFileDialog.FileName);
+                    List<string> lines = temp.Split('\n').ToList();
+
+                    int count = 0;
+                    foreach (var item in lines)
+                    {
+                        if (item[0] == ';' && item[1] == 'A' && item[2] == 'X')
+                        {
+                            break;
+                        }
+                        count++;
+                    }
+
+                    string tempLines = "";
+                    for (int i = count; i < lines.Count; i++)
+                    {
+                       tempLines += lines[i].ToString() + "\r\n";    
+                    }
+
+                    codeBox.Text += tempLines;
+                }
+                else codeBox.Text += System.IO.File.ReadAllText(clipsOpenFileDialog.FileName);
                 Text = "Экспертная система \"Сериалы\" – " + clipsOpenFileDialog.FileName;
 
 
@@ -232,5 +255,10 @@ namespace ClipsFormsExample
             }
         }
 
+        private void ClearCB_B_Click(object sender, EventArgs e)
+        {
+            codeBox.Text = "";
+            FindAx();
+        }
     }
 }

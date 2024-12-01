@@ -43,6 +43,7 @@
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.clipsSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ClearCB_B = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -109,6 +110,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.ClearCB_B);
             this.panel2.Controls.Add(this.voicesBox);
             this.panel2.Controls.Add(this.fontButton);
             this.panel2.Controls.Add(this.nextButton);
@@ -207,6 +209,18 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Аксиомы";
             // 
+            // ClearCB_B
+            // 
+            this.ClearCB_B.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ClearCB_B.Location = new System.Drawing.Point(1139, 15);
+            this.ClearCB_B.Margin = new System.Windows.Forms.Padding(4);
+            this.ClearCB_B.Name = "ClearCB_B";
+            this.ClearCB_B.Size = new System.Drawing.Size(160, 37);
+            this.ClearCB_B.TabIndex = 11;
+            this.ClearCB_B.Text = "Очистить код";
+            this.ClearCB_B.UseVisualStyleBackColor = true;
+            this.ClearCB_B.Click += new System.EventHandler(this.ClearCB_B_Click);
+            // 
             // ClipsFormsExample
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -248,6 +262,7 @@
     private System.Windows.Forms.SaveFileDialog clipsSaveFileDialog;
         private System.Windows.Forms.ComboBox voicesBox;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button ClearCB_B;
     }
 }
 
