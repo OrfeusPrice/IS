@@ -51,7 +51,7 @@ namespace Lab5_ProdMod
             return text;
         }
 
-        public override string ToString() => $"Fact Info: {name},{description},{FT.ToString()}";
+        public override string ToString() => $"Fact Info: {name},{description},{FT.ToString()},{isTrue.ToString()}";
         public override bool Equals(object obj) => name == (obj as Fact).name;
     }
 
@@ -77,6 +77,7 @@ namespace Lab5_ProdMod
         public List<Fact> left = new List<Fact>();
         public List<Node> nextNodes = new List<Node>();
         public bool isT = false;
+        public string d;
 
         public Node(Product p)
         {
@@ -84,6 +85,7 @@ namespace Lab5_ProdMod
             f = p.result;
             left = p.left;
             isT = f.isTrue;
+            d = p.description;
         }
 
         public void SetT()

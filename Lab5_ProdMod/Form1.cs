@@ -30,12 +30,18 @@ namespace Lab5_ProdMod
         {
             InitializeComponent();
 
-            //Parse(ref facts, ref PROD);
-            ParseC(ref facts, ref PROD);
+            bool bd = false;
+
+            if (bd) Parse(ref facts, ref PROD);
+            else ParseC(ref facts, ref PROD);
+            //ParseP(ref facts, ref PROD);
+
             FillProduct(ref PROD, facts);
             FillProductDescription(PROD);
-            //OutputDescriptionInFile(PROD);
-            OutputDescriptionInFileC(PROD);
+
+            if (bd) OutputDescriptionInFile(PROD);
+            else OutputDescriptionInFileC(PROD);
+            //OutputDescriptionInFileP(PROD);
 
             foreach (var item in facts)
             {
@@ -83,7 +89,18 @@ namespace Lab5_ProdMod
                 Target_BOX.Controls.Add(cb);
             }
 
+            count = 1;
+            foreach (var item in PROD)
+            {
+                Res_TB.Text += $"(defrule rule{count++}{endl}";
+                foreach (var i in item.left)
+                    Res_TB.Text += $"(fact(name \"{i.description}\")){endl}";
+                Res_TB.Text += $"(not(exists (fact (name \"{item.result.description}\")))){endl}";
 
+                Res_TB.Text += $"=>{endl}";
+                Res_TB.Text += $"(assert (fact (name \"{item.result.description}\"))){endl}";
+                Res_TB.Text += $"(assert (sendmessage \"{item.description}\"))){endl}";
+            }
 
         }
 

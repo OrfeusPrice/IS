@@ -138,27 +138,29 @@ namespace Lab5_ProdMod
                     if (node is OrNode) (node as OrNode).TryProve(axioms, ref text);
                     else if (node is AndNode) (node as AndNode).TryProve(axioms, ref text);
 
-                    bool temp = false;
+                    List<Node> temp = new List<Node>();
+                    closed.ForEach(x => temp.Add(x));
+                    
                     foreach (var cn in closed)
-                    {
                         if (cn.LeftIsTrue() && !cn.isT)
                         {
                             cn.SetT();
                             queue.Enqueue(cn);
-                            temp = true;
+                            temp.Remove(cn);
                         }
-                    }
-                    if (temp) closed.Clear();
+                    closed = temp;
                 }
             }
 
-            foreach (var a in axioms)
+            foreach (var node in nodes)
             {
-                if (!a.isA)
-                    text += "-  A: " + a.description + endl;
+                if (node.isT && node.f.FT != T)
+                {
+                    text += $"{node.f.FT}: {node.d} {endl}";
+                }
             }
 
-            if (axioms.All(x => x.isA))
+            if (axioms.All(x => x.isA) && axioms.Count > 0)
             {
                 foreach (var item in target.RtoP)
                 {

@@ -62,6 +62,31 @@ namespace Lab5_ProdMod
                 products.Add(new Product(worksheet.Cell(row, 3).Value.ToString()));
             }
         }
+        public static void ParseP(ref List<Fact> facts, ref List<Product> products)
+        {
+            string filePath = "../../Pas.xlsx";
+
+            var workbook = new XLWorkbook(filePath);
+            var worksheet = workbook.Worksheet(1);
+
+            for (int row = 1; row <= 201; row++)
+            {
+                FactType ft = T;
+                if (row == 1)
+                    ft = T;
+                else if (row == 121) ft = A;
+                else ft = C;
+
+
+                facts.Add(new Fact(worksheet.Cell(row, 1).Value.ToString(), worksheet.Cell(row, 2).Value.ToString(), ft));
+            }
+
+
+            for (int row = 1; row <= 1910; row++)
+            {
+                products.Add(new Product(worksheet.Cell(row, 3).Value.ToString()));
+            }
+        }
 
         public static void ParseProductText(Product prod, List<Fact> facts)
         {
@@ -138,12 +163,13 @@ namespace Lab5_ProdMod
         {
             foreach (Product product in products)
             {
-                string descText = "ЕСЛИ ";
+                string descText = "";
                 foreach (Fact fact in product.left)
                 {
                     descText += fact.description + ", ";
                 }
-                descText += "ТО " + product.result.description;
+                descText = descText.Remove(descText.Length - 2);
+                descText += " -> " + product.result.description;
 
                 product.description = descText;
             }
@@ -165,6 +191,20 @@ namespace Lab5_ProdMod
         public static void OutputDescriptionInFileC(List<Product> products)
         {
             string filePath = "../../Test.xlsx";
+
+            var workbook = new XLWorkbook(filePath);
+            var worksheet = workbook.Worksheet(1);
+
+            int count = 1;
+            foreach (Product product in products)
+            {
+                worksheet.Cell(count++, 4).Value = product.description;
+            }
+            workbook.SaveAs(filePath);
+        }
+        public static void OutputDescriptionInFileP(List<Product> products)
+        {
+            string filePath = "../../Pas.xlsx";
 
             var workbook = new XLWorkbook(filePath);
             var worksheet = workbook.Worksheet(1);

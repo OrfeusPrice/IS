@@ -1,0 +1,81 @@
+(defrule rule1
+(fact(name "t4"))
+(not(exists (fact (name "t2"))))
+=>
+(assert (fact (name "t2")))
+(assert (sendmessage "t4 -> t2")))
+(defrule rule2
+(fact(name "t5"))
+(not(exists (fact (name "t2"))))
+=>
+(assert (fact (name "t2")))
+(assert (sendmessage "t5 -> t2")))
+(defrule rule3
+(fact(name "t6"))
+(not(exists (fact (name "t3"))))
+=>
+(assert (fact (name "t3")))
+(assert (sendmessage "t6 -> t3")))
+(defrule rule4
+(fact(name "t7"))
+(not(exists (fact (name "t3"))))
+=>
+(assert (fact (name "t3")))
+(assert (sendmessage "t7 -> t3")))
+(defrule rule5
+(fact(name "t8"))
+(not(exists (fact (name "t4"))))
+=>
+(assert (fact (name "t4")))
+(assert (sendmessage "t8 -> t4")))
+(defrule rule6
+(fact(name "t3"))
+(not(exists (fact (name "t4"))))
+=>
+(assert (fact (name "t4")))
+(assert (sendmessage "t3 -> t4")))
+(defrule rule7
+(fact(name "c"))
+(not(exists (fact (name "t5"))))
+=>
+(assert (fact (name "t5")))
+(assert (sendmessage "c -> t5")))
+(defrule rule8
+(fact(name "d"))
+(not(exists (fact (name "t5"))))
+=>
+(assert (fact (name "t5")))
+(assert (sendmessage "d -> t5")))
+(defrule rule9
+(fact(name "t2"))
+(fact(name "e"))
+(not(exists (fact (name "t6"))))
+=>
+(assert (fact (name "t6")))
+(assert (sendmessage "t2, e -> t6")))
+(defrule rule10
+(fact(name "f"))
+(not(exists (fact (name "t7"))))
+=>
+(assert (fact (name "t7")))
+(assert (sendmessage "f -> t7")))
+(defrule rule11
+(fact(name "g"))
+(not(exists (fact (name "t7"))))
+=>
+(assert (fact (name "t7")))
+(assert (sendmessage "g -> t7")))
+(defrule rule12
+(fact(name "a"))
+(fact(name "b"))
+(not(exists (fact (name "t8"))))
+=>
+(assert (fact (name "t8")))
+(assert (sendmessage "a, b -> t8")))
+(defrule rule13
+(fact(name "t2"))
+(fact(name "t3"))
+(not(exists (fact (name "t1"))))
+=>
+(assert (fact (name "t1")))
+(assert (sendmessage "t2, t3 -> t1")))
