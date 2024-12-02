@@ -67,7 +67,7 @@ namespace ClipsFormsExample
                 if (temp.Count() > 2)
                     if (temp[0] == '(' && temp[1] == 'A')
                     {
-                        temp = temp.Substring(10);
+                        temp = temp.Substring(14);
                         temp = temp.Remove(temp.Length - 3);
                         axiomList.Add(temp);
                     }
@@ -174,9 +174,8 @@ namespace ClipsFormsExample
         private void nextBtn_Click(object sender, EventArgs e)
         {
             foreach (var line in outputBox.Lines)
-            {
-                clips.Eval($"(assert (input-question (name \"{line}\")))");
-            }
+                clips.Eval($"(assert (Input (name \"{line}\")))");
+            
             clips.Run();
             HandleResponse();
         }
@@ -219,7 +218,7 @@ namespace ClipsFormsExample
                     string tempLines = "";
                     for (int i = count; i < lines.Count; i++)
                     {
-                       tempLines += lines[i].ToString() + "\r\n";    
+                        tempLines += lines[i].ToString() + "\r\n";
                     }
 
                     codeBox.Text += tempLines;
