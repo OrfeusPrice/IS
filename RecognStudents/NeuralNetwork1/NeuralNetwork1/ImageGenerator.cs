@@ -48,22 +48,7 @@ namespace NeuralNetwork1
         /// <summary>
         /// Количество классов генерируемых фигур (4 - максимум)
         /// </summary>
-        public int FigureCount { get; set; } = 4;
-
-        /// <summary>
-        /// Диапазон смещения центра фигуры (по умолчанию +/- 20 пикселов от центра)
-        /// </summary>
-        public int FigureCenterGitter { get; set; } = 50;
-
-        /// <summary>
-        /// Диапазон разброса размера фигур
-        /// </summary>
-        public int FigureSizeGitter { get; set; } = 50;
-
-        /// <summary>
-        /// Диапазон разброса размера фигур
-        /// </summary>
-        public int FigureSize { get; set; } = 100;
+        public int FigureCount { get; set; } = 10;
 
         /// <summary>
         /// Очистка образа
@@ -107,7 +92,7 @@ namespace NeuralNetwork1
             int R = Color.Black.R;
             int G = Color.Black.G;
             int B = Color.Black.B;
-            int dif = 100;
+            int dif = 230;
             
             for (int i = 0; i < 100; i++)
             {
@@ -141,65 +126,6 @@ namespace NeuralNetwork1
                         input[100 + j] += 1;
                     }
             return new Sample(input, FigureCount, type);
-        }
-
-        private Point GetLeftUpperPoint()
-        {
-            int x = 100 - FigureSize / 2 + rand.Next(-FigureSizeGitter / 2, FigureSizeGitter / 2);
-            int y = 100 - FigureSize / 2 + rand.Next(-FigureSizeGitter / 2, FigureSizeGitter / 2);
-            return new Point(x, y);
-        }
-
-        private Point GetRightDownPoint()
-        {
-            int x = 100 + FigureSize / 2 + rand.Next(-FigureSizeGitter / 2, FigureSizeGitter / 2);
-            int y = 100 + FigureSize / 2 + rand.Next(-FigureSizeGitter / 2, FigureSizeGitter / 2);
-            return new Point(x, y);
-        }
-
-        private Point GetCenterPoint()
-        {
-            int x = 100 + rand.Next(-FigureSizeGitter / 2, FigureSizeGitter / 2);
-            int y = 100 + rand.Next(-FigureSizeGitter / 2, FigureSizeGitter / 2);
-            return new Point(x, y);
-        }
-
-        private void Bresenham(int x, int y, int x2, int y2)
-        {
-            int w = x2 - x;
-            int h = y2 - y;
-            int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
-            if (w < 0) dx1 = -1; else if (w > 0) dx1 = 1;
-            if (h < 0) dy1 = -1; else if (h > 0) dy1 = 1;
-            if (w < 0) dx2 = -1; else if (w > 0) dx2 = 1;
-            int longest = Math.Abs(w);
-            int shortest = Math.Abs(h);
-
-            if (!(longest > shortest))
-            {
-                longest = Math.Abs(h);
-                shortest = Math.Abs(w);
-                if (h < 0) dy2 = -1; else if (h > 0) dy2 = 1;
-                dx2 = 0;
-            }
-
-            int numerator = longest >> 1;
-            for (int i = 0; i <= longest; i++)
-            {
-                img[x, y] = true;
-                numerator += shortest;
-                if (!(numerator < longest))
-                {
-                    numerator -= longest;
-                    x += dx1;
-                    y += dy1;
-                }
-                else
-                {
-                    x += dx2;
-                    y += dy2;
-                }
-            }
         }
 
 
