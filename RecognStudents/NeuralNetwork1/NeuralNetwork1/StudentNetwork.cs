@@ -18,29 +18,29 @@ namespace NeuralNetwork1
 
         private class Layer
         {
-            public Node[] Neurons;
+            public Neuron[] Neurons;
 
             public Layer(int neuronsCount, Layer previousLayer = null)
             {
-                Neurons = new Node[neuronsCount];
+                Neurons = new Neuron[neuronsCount];
                 for (int i = 0; i < neuronsCount; i++)
                 {
-                    Neurons[i] = new Node(previousLayer?.Neurons);
+                    Neurons[i] = new Neuron(previousLayer?.Neurons);
                 }
             }
         }
 
-        private class Node
+        private class Neuron
         {
-            public Node[] prevNeurons;
+            public Neuron[] prevNeurons;
             public double output;
             public double[] weights;
             public double error;
             public double bias;
 
-            public Node(Node[] previousLayerNodes = null)
+            public Neuron(Neuron[] previousLayerNeurones = null)
             {
-                prevNeurons = previousLayerNodes ?? Array.Empty<Node>();
+                prevNeurons = previousLayerNeurones ?? Array.Empty<Neuron>();
                 weights = new double[prevNeurons.Length];
                 InitializeWeights();
             }
@@ -190,8 +190,8 @@ namespace NeuralNetwork1
             {
                 foreach (var neuron in layers[layerIndex].Neurons)
                 {
-                    double errorSum = layers[layerIndex + 1].Neurons.Sum(nextNode =>
-                        nextNode.error * nextNode.weights[Array.IndexOf(layers[layerIndex].Neurons, neuron)]
+                    double errorSum = layers[layerIndex + 1].Neurons.Sum(nextNeuron =>
+                        nextNeuron.error * nextNeuron.weights[Array.IndexOf(layers[layerIndex].Neurons, neuron)]
                     );
                     neuron.error = errorSum * neuron.output * (1 - neuron.output);
                 }
@@ -222,8 +222,8 @@ namespace NeuralNetwork1
             {
                 Parallel.ForEach(layers[layerIndex].Neurons, neuron =>
                 {
-                    double errorSum = layers[layerIndex + 1].Neurons.Sum(nextNode =>
-                        nextNode.error * nextNode.weights[Array.IndexOf(layers[layerIndex].Neurons, neuron)]
+                    double errorSum = layers[layerIndex + 1].Neurons.Sum(nextNeuron =>
+                        nextNeuron.error * nextNeuron.weights[Array.IndexOf(layers[layerIndex].Neurons, neuron)]
                     );
                     neuron.error = errorSum * neuron.output * (1 - neuron.output);
                 });
