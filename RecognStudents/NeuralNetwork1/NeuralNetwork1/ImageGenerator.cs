@@ -31,6 +31,8 @@ namespace NeuralNetwork1
     public class GenerateImage
     {
         string pathToDataset = "../../dataset/";
+        string testDataSetPath = "../../test/";
+
 
         /// <summary>
         /// Бинарное представление образа
@@ -60,7 +62,7 @@ namespace NeuralNetwork1
                     img[i, j] = false;
         }
 
-        public Sample GenerateFigure(PictureBox pb)
+        public Sample GenerateFigure(PictureBox pb, bool isTest = false)
         {
             generate_figure(pb);
             double[] input = new double[200];
@@ -93,7 +95,7 @@ namespace NeuralNetwork1
             int G = Color.Black.G;
             int B = Color.Black.B;
             int dif = 230;
-            
+
             for (int i = 0; i < 100; i++)
             {
                 for (int j = 0; j < 100; j++)
@@ -129,10 +131,13 @@ namespace NeuralNetwork1
         }
 
 
-        public void CreateFig(FigureType fg, PictureBox pb)
+        public void CreateFig(FigureType fg, PictureBox pb, bool isTest = false)
         {
             Random random = new Random();
             string filePath = pathToDataset + "//" + fg.ToString();
+            if (isTest)
+                filePath = testDataSetPath + "//" + fg.ToString();
+
             List<String> imgs = new List<string>();
             foreach (var item in Directory.GetFiles(filePath))
             {
@@ -163,7 +168,7 @@ namespace NeuralNetwork1
 
         }
 
-        public void generate_figure(PictureBox pb, FigureType type = FigureType.Undef)
+        public void generate_figure(PictureBox pb, bool isTest = false,FigureType type = FigureType.Undef)
         {
 
             if (type == FigureType.Undef || (int)type >= FigureCount)

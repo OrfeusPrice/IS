@@ -334,7 +334,7 @@
             this.TrainingSizeCounter.Size = new System.Drawing.Size(160, 22);
             this.TrainingSizeCounter.TabIndex = 6;
             this.TrainingSizeCounter.Value = new decimal(new int[] {
-            200,
+            400,
             0,
             0,
             0});
@@ -360,7 +360,7 @@
             // 
             // trainOneButton
             // 
-            this.trainOneButton.Location = new System.Drawing.Point(685, 590);
+            this.trainOneButton.Location = new System.Drawing.Point(684, 752);
             this.trainOneButton.Margin = new System.Windows.Forms.Padding(4);
             this.trainOneButton.Name = "trainOneButton";
             this.trainOneButton.Size = new System.Drawing.Size(168, 37);
@@ -371,7 +371,7 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(690, 522);
+            this.progressBar1.Location = new System.Drawing.Point(689, 684);
             this.progressBar1.Margin = new System.Windows.Forms.Padding(4);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(388, 27);
@@ -384,7 +384,7 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.infoStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 640);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 803);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 19, 0);
             this.statusStrip1.Size = new System.Drawing.Size(1084, 26);
@@ -402,7 +402,7 @@
             // elapsedTimeLabel
             // 
             this.elapsedTimeLabel.AutoSize = true;
-            this.elapsedTimeLabel.Location = new System.Drawing.Point(696, 553);
+            this.elapsedTimeLabel.Location = new System.Drawing.Point(695, 715);
             this.elapsedTimeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.elapsedTimeLabel.Name = "elapsedTimeLabel";
             this.elapsedTimeLabel.Size = new System.Drawing.Size(51, 16);
@@ -429,7 +429,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1084, 666);
+            this.ClientSize = new System.Drawing.Size(1084, 829);
             this.Controls.Add(this.StatusLabel);
             this.Controls.Add(label7);
             this.Controls.Add(this.elapsedTimeLabel);

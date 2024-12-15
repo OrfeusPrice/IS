@@ -54,6 +54,8 @@ namespace NeuralNetwork1
             mf.Show();
 
             MainForm.Recogn += RecognExternalImage;
+
+            
         }
 
         public void RecognExternalImage(Bitmap bm, string figName)
@@ -173,7 +175,7 @@ namespace NeuralNetwork1
             SamplesSet samples = new SamplesSet();
 
             for (int i = 0; i < (int)TrainingSizeCounter.Value; i++)
-                samples.AddSample(generator.GenerateFigure(pictureBox1));
+                samples.AddSample(generator.GenerateFigure(pictureBox1, true));
 
             double accuracy = samples.TestNeuralNetwork(Net);
 

@@ -19,8 +19,8 @@ namespace ImgBinarizer
             Undef
         };
 
-        string pathToDataset = "../../../dataset/";
-        string pathToDatasetNew = "../../../NewDataSet/dataset/";
+        string pathToDataset = "../../../test/";
+        string pathToDatasetNew = "../../../NewTest/test/";
         public Form1()
         {
             InitializeComponent();
@@ -57,7 +57,7 @@ namespace ImgBinarizer
                     int R = Color.Black.R;
                     int G = Color.Black.G;
                     int B = Color.Black.B;
-                    int dif = 150;
+                    int dif = 200;
 
                     for (int i = 0; i < 100; i++)
                     {
