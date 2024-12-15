@@ -47,12 +47,12 @@ namespace NeuralNetwork1
 
             private void InitializeWeights()
             {
-                double stdDev = 1.0 / Math.Sqrt(weights.Length);
+                double deviation = 1.0 / Math.Sqrt(weights.Length);
                 for (int i = 0; i < weights.Length; i++)
                 {
-                    weights[i] = _rand.NextDouble() * 2 * stdDev - stdDev;
+                    weights[i] = _rand.NextDouble() * 2 * deviation - deviation;
                 }
-                bias = _rand.NextDouble() * 2 * stdDev - stdDev;
+                bias = _rand.NextDouble() * 2 * deviation - deviation;
             }
 
             public void ComputeActivation()
