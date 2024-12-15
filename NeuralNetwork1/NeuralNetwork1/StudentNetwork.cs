@@ -8,8 +8,8 @@ namespace NeuralNetwork1
 {
     public class StudentNetwork : BaseNetwork
     {
-        private readonly Stopwatch stopwatch = new Stopwatch();
-        private static readonly Random randomGenerator = new Random();
+        private readonly Stopwatch _stopwatch = new Stopwatch();
+        private static readonly Random _rand = new Random();
 
         public static double SigmoidFunction(double input) => 1 / (1 + Math.Exp(-input));
         public static double LearningRate = 0.03;
@@ -50,9 +50,9 @@ namespace NeuralNetwork1
                 double stdDev = 1.0 / Math.Sqrt(weights.Length);
                 for (int i = 0; i < weights.Length; i++)
                 {
-                    weights[i] = randomGenerator.NextDouble() * 2 * stdDev - stdDev;
+                    weights[i] = _rand.NextDouble() * 2 * stdDev - stdDev;
                 }
-                bias = randomGenerator.NextDouble() * 2 * stdDev - stdDev;
+                bias = _rand.NextDouble() * 2 * stdDev - stdDev;
             }
 
             public void ComputeActivation()
@@ -75,19 +75,19 @@ namespace NeuralNetwork1
             }
         }
 
-        public StudentNetwork(int[] layerSizes)
+        public StudentNetwork(int[] structure)
         {
-            InitializeNetwork(layerSizes);
+            InitializeNetwork(structure);
         }
 
-        private void InitializeNetwork(int[] layerSizes)
+        private void InitializeNetwork(int[] structure)
         {
-            layers = new Layer[layerSizes.Length];
-            layers[0] = new Layer(layerSizes[0]); // Input layer
+            layers = new Layer[structure.Length];
+            layers[0] = new Layer(structure[0]); // Input layer
 
-            for (int i = 1; i < layerSizes.Length; i++)
+            for (int i = 1; i < structure.Length; i++)
             {
-                layers[i] = new Layer(layerSizes[i], layers[i - 1]);
+                layers[i] = new Layer(structure[i], layers[i - 1]);
             }
         }
 
@@ -109,7 +109,7 @@ namespace NeuralNetwork1
             return layers.Last().Neurons.Select(neuron => neuron.output).ToArray();
         }
 
-        public double[] Execute(Sample sample)
+        public double[] Run(Sample sample)
         {
             var output = Compute(sample.input);
             sample.ProcessPrediction(output);
@@ -119,13 +119,13 @@ namespace NeuralNetwork1
         public override int Train(Sample sample, double acceptableError, bool parallel)
         {
             int iterations = 0;
-            Execute(sample);
+            Run(sample);
             double currentError = sample.EstimatedError();
 
             while (currentError > acceptableError)
             {
                 iterations++;
-                Execute(sample);
+                Run(sample);
                 currentError = sample.EstimatedError();
                 if (!parallel)
                     BackpropagateError(sample);
@@ -138,7 +138,7 @@ namespace NeuralNetwork1
 
         public override double TrainOnDataSet(SamplesSet sampleSet, int epochsCount, double acceptableError, bool parallel)
         {
-            stopwatch.Restart();
+            _stopwatch.Restart();
             double totalError = 0;
 
             for (int epoch = 0; epoch < epochsCount; epoch++)
@@ -172,10 +172,10 @@ namespace NeuralNetwork1
                 }
 
                 totalError = epochError;
-                OnTrainProgress(((epoch + 1) * 1.0) / epochsCount, totalError, stopwatch.Elapsed);
+                OnTrainProgress(((epoch + 1) * 1.0) / epochsCount, totalError, _stopwatch.Elapsed);
             }
 
-            stopwatch.Stop();
+            _stopwatch.Stop();
             return totalError;
         }
 
