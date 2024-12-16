@@ -210,7 +210,7 @@
             this.netStructureBox.Name = "netStructureBox";
             this.netStructureBox.Size = new System.Drawing.Size(159, 22);
             this.netStructureBox.TabIndex = 18;
-            this.netStructureBox.Text = "200;500;20;10";
+            this.netStructureBox.Text = "200;200;20;10";
             // 
             // recreateNetButton
             // 
@@ -354,13 +354,14 @@
             this.label9.Location = new System.Drawing.Point(696, 452);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(17, 160);
+            this.label9.Size = new System.Drawing.Size(61, 160);
             this.label9.TabIndex = 7;
-            this.label9.Text = "0:\r\n1:\r\n2:\r\n3:\r\n4:\r\n5:\r\n6:\r\n7:\r\n8:\r\n9:";
+            this.label9.Text = "Mercury \r\nVenus:\r\nEarth:\r\nMars:\r\nJupiter:\r\nSaturn:\r\nUranus:\r\nNeptune:\r\nSun:\r\nMoon" +
+    ":";
             // 
             // trainOneButton
             // 
-            this.trainOneButton.Location = new System.Drawing.Point(684, 752);
+            this.trainOneButton.Location = new System.Drawing.Point(680, 684);
             this.trainOneButton.Margin = new System.Windows.Forms.Padding(4);
             this.trainOneButton.Name = "trainOneButton";
             this.trainOneButton.Size = new System.Drawing.Size(168, 37);
@@ -371,7 +372,7 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(689, 684);
+            this.progressBar1.Location = new System.Drawing.Point(685, 616);
             this.progressBar1.Margin = new System.Windows.Forms.Padding(4);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(388, 27);
@@ -402,7 +403,7 @@
             // elapsedTimeLabel
             // 
             this.elapsedTimeLabel.AutoSize = true;
-            this.elapsedTimeLabel.Location = new System.Drawing.Point(695, 715);
+            this.elapsedTimeLabel.Location = new System.Drawing.Point(691, 647);
             this.elapsedTimeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.elapsedTimeLabel.Name = "elapsedTimeLabel";
             this.elapsedTimeLabel.Size = new System.Drawing.Size(51, 16);
