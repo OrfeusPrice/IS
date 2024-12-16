@@ -387,7 +387,7 @@
             this.statusStrip1.Location = new System.Drawing.Point(0, 640);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 19, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1439, 26);
+            this.statusStrip1.Size = new System.Drawing.Size(1243, 26);
             this.statusStrip1.TabIndex = 11;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -429,7 +429,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1439, 666);
+            this.ClientSize = new System.Drawing.Size(1243, 666);
             this.Controls.Add(this.StatusLabel);
             this.Controls.Add(label7);
             this.Controls.Add(this.elapsedTimeLabel);

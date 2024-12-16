@@ -224,11 +224,20 @@ namespace AForge.WindowsForms
 
         private void Recogn_B_Click(object sender, EventArgs e)
         {
+            timer1.Interval = 1000;
+            timer1.Enabled = true;
+            Recogn_B.Enabled = false;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
             var prImg = controller.GetProcessedImage();
             ResizeBicubic resize = new ResizeBicubic(100, 100);
             prImg = resize.Apply(prImg);
 
             Recogn?.Invoke(prImg, Classes_CB.SelectedItem.ToString());
+            timer1.Interval = 1000;
         }
     }
 }

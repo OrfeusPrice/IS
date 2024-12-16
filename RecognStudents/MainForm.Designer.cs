@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.cmbVideoSource = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.StartButton = new System.Windows.Forms.Button();
@@ -46,12 +47,13 @@
             this.statusLabel = new System.Windows.Forms.Label();
             this.ticksLabel = new System.Windows.Forms.Label();
             this.controlPanel = new System.Windows.Forms.Panel();
+            this.Recogn_B = new System.Windows.Forms.Button();
             this.ProcessButton = new System.Windows.Forms.Button();
             this.PlayButton = new System.Windows.Forms.Button();
             this.resolutionsBox = new System.Windows.Forms.ComboBox();
             this.SaveImage_B = new System.Windows.Forms.Button();
             this.Classes_CB = new System.Windows.Forms.ComboBox();
-            this.Recogn_B = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
             this.panel1.SuspendLayout();
@@ -271,6 +273,19 @@
             this.controlPanel.Size = new System.Drawing.Size(591, 72);
             this.controlPanel.TabIndex = 33;
             // 
+            // Recogn_B
+            // 
+            this.Recogn_B.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Recogn_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Recogn_B.Location = new System.Drawing.Point(46, 16);
+            this.Recogn_B.Margin = new System.Windows.Forms.Padding(4);
+            this.Recogn_B.Name = "Recogn_B";
+            this.Recogn_B.Size = new System.Drawing.Size(167, 37);
+            this.Recogn_B.TabIndex = 27;
+            this.Recogn_B.Text = "Обработать";
+            this.Recogn_B.UseVisualStyleBackColor = true;
+            this.Recogn_B.Click += new System.EventHandler(this.Recogn_B_Click);
+            // 
             // ProcessButton
             // 
             this.ProcessButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -342,18 +357,9 @@
             this.Classes_CB.Size = new System.Drawing.Size(291, 24);
             this.Classes_CB.TabIndex = 35;
             // 
-            // Recogn_B
+            // timer1
             // 
-            this.Recogn_B.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Recogn_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Recogn_B.Location = new System.Drawing.Point(46, 16);
-            this.Recogn_B.Margin = new System.Windows.Forms.Padding(4);
-            this.Recogn_B.Name = "Recogn_B";
-            this.Recogn_B.Size = new System.Drawing.Size(167, 37);
-            this.Recogn_B.TabIndex = 27;
-            this.Recogn_B.Text = "Обработать";
-            this.Recogn_B.UseVisualStyleBackColor = true;
-            this.Recogn_B.Click += new System.EventHandler(this.Recogn_B_Click);
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // MainForm
             // 
@@ -420,6 +426,7 @@
         private System.Windows.Forms.Button SaveImage_B;
         private System.Windows.Forms.ComboBox Classes_CB;
         private System.Windows.Forms.Button Recogn_B;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

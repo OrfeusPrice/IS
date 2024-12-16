@@ -37,9 +37,9 @@ namespace NeuralNetwork1
         public Sample(double[] inputValues, int classesCount, FigureType sampleClass = FigureType.Undef)
         {
             //  Клонируем массивчик
-            input = (double[]) inputValues.Clone();
+            input = (double[])inputValues.Clone();
             Output = new double[classesCount];
-            if (sampleClass != FigureType.Undef) Output[(int) sampleClass] = 1;
+            if (sampleClass != FigureType.Undef) Output[(int)sampleClass] = 1;
 
 
             recognizedClass = FigureType.Undef;
@@ -64,8 +64,8 @@ namespace NeuralNetwork1
             recognizedClass = 0;
             for (int i = 0; i < Output.Length; ++i)
             {
-                error[i] = (Output[i] - (i == (int) actualClass ? 1 : 0));
-                if (Output[i] > Output[(int) recognizedClass]) recognizedClass = (FigureType) i;
+                error[i] = (Output[i] - (i == (int)actualClass ? 1 : 0));
+                if (Output[i] > Output[(int)recognizedClass]) recognizedClass = (FigureType)i;
             }
 
             return recognizedClass;
@@ -100,7 +100,7 @@ namespace NeuralNetwork1
         /// <returns></returns>
         public override string ToString()
         {
-            string result = "Sample decoding : " + actualClass.ToString() + "(" + ((int) actualClass).ToString() +
+            string result = "Sample decoding : " + actualClass.ToString() + "(" + ((int)actualClass).ToString() +
                             "); " + Environment.NewLine + "Input : ";
             for (int i = 0; i < input.Length; ++i) result += input[i].ToString() + "; ";
             result += Environment.NewLine + "Output : ";
@@ -115,7 +115,7 @@ namespace NeuralNetwork1
                 for (int i = 0; i < error.Length; ++i)
                     result += error[i].ToString() + "; ";
             result += Environment.NewLine + "Recognized : " + recognizedClass.ToString() + "(" +
-                      ((int) recognizedClass).ToString() + "); " + Environment.NewLine;
+                      ((int)recognizedClass).ToString() + "); " + Environment.NewLine;
 
 
             return result;
@@ -140,6 +140,8 @@ namespace NeuralNetwork1
         /// Накопленные обучающие образы
         /// </summary>
         public List<Sample> samples = new List<Sample>();
+
+        public string infoString = "Not yet tested!";
 
         /// <summary>
         /// Добавление образа к коллекции
@@ -177,6 +179,22 @@ namespace NeuralNetwork1
                 if (sample.actualClass == network.Predict(sample)) ++correct;
                 else ++wrong;
             }
+            int all = StudentNetwork._structure[1] + StudentNetwork._structure[2];
+            int bad = 0;
+
+            foreach (var item in StudentNetwork.newLayers)
+            {
+                foreach (var n in item.Neurons)
+                {
+                    if (n.badCount >= 350)
+                    {
+                        bad++;
+                    }
+                }
+            }
+
+            infoString = $"{bad}, Все нейроны: {all}";
+            //  посчитать два значения
             return correct / (correct + wrong);
         }
 

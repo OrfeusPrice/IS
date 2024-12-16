@@ -354,9 +354,9 @@
             this.label9.Location = new System.Drawing.Point(696, 452);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(17, 64);
+            this.label9.Size = new System.Drawing.Size(17, 160);
             this.label9.TabIndex = 7;
-            this.label9.Text = "0:\r\n1:\r\n2:\r\n3:";
+            this.label9.Text = "0:\r\n1:\r\n2:\r\n3:\r\n4:\r\n5:\r\n6:\r\n7:\r\n8:\r\n9:";
             // 
             // trainOneButton
             // 

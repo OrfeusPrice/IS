@@ -22,7 +22,7 @@ namespace NeuralNetwork1
         {
             get
             {
-                var selectedItem = (string) netTypeBox.SelectedItem;
+                var selectedItem = (string)netTypeBox.SelectedItem;
                 if (!networksCache.ContainsKey(selectedItem))
                     networksCache.Add(selectedItem, CreateNetwork(selectedItem));
 
@@ -32,6 +32,8 @@ namespace NeuralNetwork1
 
         private readonly Dictionary<string, Func<int[], BaseNetwork>> networksFabric;
         private Dictionary<string, BaseNetwork> networksCache = new Dictionary<string, BaseNetwork>();
+        public static TextBox TB = new TextBox();
+
 
         /// <summary>
         /// Конструктор формы стенда для работы с сетями
@@ -41,11 +43,20 @@ namespace NeuralNetwork1
         {
             InitializeComponent();
             this.networksFabric = networksFabric;
-            netTypeBox.Items.AddRange(this.networksFabric.Keys.Select(s => (object) s).ToArray());
+            netTypeBox.Items.AddRange(this.networksFabric.Keys.Select(s => (object)s).ToArray());
             netTypeBox.SelectedIndex = 0;
-            generator.FigureCount = (int) classCounter.Value;
+            generator.FigureCount = (int)classCounter.Value;
             button3_Click(this, null);
             pictureBox1.Image = Properties.Resources.Title;
+
+            TB.Location = new Point(1084, 105);
+            TB.Size = new Size(313, 22);
+            //StudentNetwork.onGetBadNeuronsCount += SetBadNeuronsCounter;
+        }
+
+
+        public void SetBadNeuronsCounter(int count)
+        {
         }
 
         public void UpdateLearningInfo(double progress, double error, TimeSpan elapsedTime)
@@ -57,7 +68,7 @@ namespace NeuralNetwork1
             }
 
             StatusLabel.Text = "Ошибка: " + error;
-            int progressPercent = (int) Math.Round(progress * 100);
+            int progressPercent = (int)Math.Round(progress * 100);
             progressPercent = Math.Min(100, Math.Max(0, progressPercent));
             elapsedTimeLabel.Text = "Затраченное время : " + elapsedTime.Duration().ToString(@"hh\:mm\:ss\:ff");
             progressBar1.Value = progressPercent;
@@ -70,7 +81,8 @@ namespace NeuralNetwork1
 
             label1.Text = "Распознано : " + figure.recognizedClass;
 
-            label8.Text = string.Join("\n", figure.Output.Select(d => d.ToString(CultureInfo.InvariantCulture)));
+            var outputs_text = figure.Output.Select(x => Math.Round(x, 3)); 
+            label8.Text = string.Join("\n", outputs_text.Select(d => d.ToString(CultureInfo.InvariantCulture)));
             pictureBox1.Image = generator.GenBitmap();
             pictureBox1.Invalidate();
         }
@@ -125,7 +137,7 @@ namespace NeuralNetwork1
         private void button1_Click(object sender, EventArgs e)
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            train_networkAsync((int) TrainingSizeCounter.Value, (int) EpochesCounter.Value,
+            train_networkAsync((int)TrainingSizeCounter.Value, (int)EpochesCounter.Value,
                 (100 - AccuracyCounter.Value) / 100.0, parallelCheckBox.Checked);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
@@ -137,12 +149,12 @@ namespace NeuralNetwork1
             //  Создаём новую обучающую выборку
             SamplesSet samples = new SamplesSet();
 
-            for (int i = 0; i < (int) TrainingSizeCounter.Value; i++)
+            for (int i = 0; i < (int)TrainingSizeCounter.Value; i++)
                 samples.AddSample(generator.GenerateFigure());
 
             double accuracy = samples.TestNeuralNetwork(Net);
 
-            StatusLabel.Text = $"Точность на тестовой выборке : {accuracy * 100,5:F2}%";
+            StatusLabel.Text = $"Точность на тестовой выборке : {accuracy * 100,5:F2}%\nПлохие нейроны : " + samples.infoString;
             StatusLabel.ForeColor = accuracy * 100 >= AccuracyCounter.Value ? Color.Green : Color.Red;
 
             Enabled = true;
@@ -175,7 +187,7 @@ namespace NeuralNetwork1
 
         private void classCounter_ValueChanged(object sender, EventArgs e)
         {
-            generator.FigureCount = (int) classCounter.Value;
+            generator.FigureCount = (int)classCounter.Value;
             var vals = netStructureBox.Text.Split(';');
             if (!int.TryParse(vals.Last(), out _)) return;
             vals[vals.Length - 1] = classCounter.Value.ToString();
