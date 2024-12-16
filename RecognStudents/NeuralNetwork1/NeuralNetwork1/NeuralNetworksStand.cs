@@ -114,7 +114,7 @@ namespace NeuralNetwork1
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            Sample fig = generator.GenerateFigure(pictureBox1);
+            Sample fig = generator.GenerateFigure(pictureBox1, true);
 
             Net.Predict(fig);
 

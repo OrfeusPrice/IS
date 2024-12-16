@@ -83,7 +83,7 @@ namespace NeuralNetwork1
         private void InitializeNetwork(int[] structure)
         {
             layers = new Layer[structure.Length];
-            layers[0] = new Layer(structure[0]); // Input layer
+            layers[0] = new Layer(structure[0]);
 
             for (int i = 1; i < structure.Length; i++)
             {
