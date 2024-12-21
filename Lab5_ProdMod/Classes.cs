@@ -20,6 +20,7 @@ namespace Lab5_ProdMod
         public List<Product> RtoP;
         public bool isTrue = false;
         public bool isA = false;
+
         public Fact(string name, string description, FactType ft)
         {
             this.name = name;
@@ -61,12 +62,13 @@ namespace Lab5_ProdMod
         public List<Fact> left;
         public Fact result;
         public string description;
-
-        public Product(string text)
+        public float percent;
+        public Product(string text, float percent)
         {
             this.text = text;
             left = new List<Fact>();
             result = new Fact("f00", "Нет факта", C);
+            this.percent = percent;
         }
     }
 

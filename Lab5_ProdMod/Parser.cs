@@ -31,10 +31,11 @@ namespace Lab5_ProdMod
                 facts.Add(new Fact(worksheet.Cell(row, 1).Value.ToString(), worksheet.Cell(row, 2).Value.ToString(), ft));
             }
 
+            Random random = new Random();
 
             for (int row = 1; row <= 122; row++)
             {
-                products.Add(new Product(worksheet.Cell(row, 3).Value.ToString()));
+                products.Add(new Product(worksheet.Cell(row, 3).Value.ToString(),(float)((float)random.Next(55 - row/7,100) / 100)));
             }
         }
 
@@ -55,38 +56,38 @@ namespace Lab5_ProdMod
 
                 facts.Add(new Fact(worksheet.Cell(row, 1).Value.ToString(), worksheet.Cell(row, 2).Value.ToString(), ft));
             }
-
+            Random random = new Random();
 
             for (int row = 1; row <= 13; row++)
             {
-                products.Add(new Product(worksheet.Cell(row, 3).Value.ToString()));
+                products.Add(new Product(worksheet.Cell(row, 3).Value.ToString(), (float)((float)random.Next(55 - row / 7, 100) / 100)));
             }
         }
-        public static void ParseP(ref List<Fact> facts, ref List<Product> products)
-        {
-            string filePath = "../../Pas.xlsx";
+        //public static void ParseP(ref List<Fact> facts, ref List<Product> products)
+        //{
+        //    string filePath = "../../Pas.xlsx";
 
-            var workbook = new XLWorkbook(filePath);
-            var worksheet = workbook.Worksheet(1);
+        //    var workbook = new XLWorkbook(filePath);
+        //    var worksheet = workbook.Worksheet(1);
 
-            for (int row = 1; row <= 201; row++)
-            {
-                FactType ft = T;
-                if (row == 1)
-                    ft = T;
-                else if (row == 121) ft = A;
-                else ft = C;
-
-
-                facts.Add(new Fact(worksheet.Cell(row, 1).Value.ToString(), worksheet.Cell(row, 2).Value.ToString(), ft));
-            }
+        //    for (int row = 1; row <= 201; row++)
+        //    {
+        //        FactType ft = T;
+        //        if (row == 1)
+        //            ft = T;
+        //        else if (row == 121) ft = A;
+        //        else ft = C;
 
 
-            for (int row = 1; row <= 1910; row++)
-            {
-                products.Add(new Product(worksheet.Cell(row, 3).Value.ToString()));
-            }
-        }
+        //        facts.Add(new Fact(worksheet.Cell(row, 1).Value.ToString(), worksheet.Cell(row, 2).Value.ToString(), ft));
+        //    }
+
+
+        //    for (int row = 1; row <= 1910; row++)
+        //    {
+        //        products.Add(new Product(worksheet.Cell(row, 3).Value.ToString()));
+        //    }
+        //}
 
         public static void ParseProductText(Product prod, List<Fact> facts)
         {

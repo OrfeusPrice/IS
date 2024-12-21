@@ -11,6 +11,8 @@ using static Lab5_ProdMod.Program;
 using static Lab5_ProdMod.Parser;
 using static Lab5_ProdMod.Search;
 using static Lab5_ProdMod.FactType;
+using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Lab5_ProdMod
 {
@@ -92,14 +94,20 @@ namespace Lab5_ProdMod
             count = 1;
             foreach (var item in PROD)
             {
-                Res_TB.Text += $"(defrule rule{count++}{endl}";
+                Res_TB.Text += $"(defrule rule{count++ + 300}{endl}";
+                Res_TB.Text += $"(declare (salience 3)){endl}";
+                int c = 1;
                 foreach (var i in item.left)
-                    Res_TB.Text += $"(fact(name \"{i.description}\")){endl}";
-                Res_TB.Text += $"(not(exists (fact (name \"{item.result.description}\")))){endl}";
-
+                    Res_TB.Text += $"(factc (fact \"{i.description}\") (confidence ?f{c++})){endl}";
                 Res_TB.Text += $"=>{endl}";
-                Res_TB.Text += $"(assert (fact (name \"{item.result.description}\"))){endl}";
-                Res_TB.Text += $"(assert (sendmessage \"{item.description}\"))){endl}";
+                Res_TB.Text += $"(bind ?minc (min 1.0";
+                c--;
+                foreach (var i in item.left)
+                    Res_TB.Text += $" ?f{c--}";
+                Res_TB.Text += $")){endl}(bind ?minc (max 0 ?minc)){endl}(bind ?resc (* ?minc {item.percent.ToString().Replace(',','.')})){endl}";
+
+                Res_TB.Text += $"(assert (factc (fact \"{item.result.description}\") (confidence ?resc))){endl}(assert (sendmessagehalt \"Выведено: {item.result.description} - \" (str-cat ?resc))){endl}){endl}";
+
             }
 
         }
